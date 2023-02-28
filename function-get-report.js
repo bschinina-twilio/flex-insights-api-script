@@ -32,7 +32,7 @@ exports.handler = async function (context, event, callback) {
 
 			if (tmpToken) {
 				// get report export
-				let reportResponse = await exportReport(tmpToken, workspaceId, reportId)
+				let reportResponse = await getReportExport(tmpToken, workspaceId, reportId)
 
 				if (reportResponse) {
 					// get report CSV
@@ -141,7 +141,7 @@ const getTempToken = async (apiAuth) => {
 	}
 }
 
-const exportReport = async (tmpToken, workspace_id, object_id) => {
+const getReportExport = async (tmpToken, workspace_id, object_id) => {
 	let reportResponse
 
 	//set up report data
