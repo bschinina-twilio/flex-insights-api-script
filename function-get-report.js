@@ -22,6 +22,7 @@ exports.handler = async function (context, event, callback) {
 	const workspaceId = context.ANALYTICS_WORKSPACE
 	const { reportId, username, password } = event
 
+	// verify we have all required request variables
 	const eventCheck = verifyEventProps(event);
 	if (!eventCheck.success) {
 		console.log('Event property check failed.', eventCheck.errors);
@@ -30,7 +31,7 @@ exports.handler = async function (context, event, callback) {
 		return callback(null, response);
 	}
 
-
+	// get the data from Flex Insights
 	try {
 		// get sstoken with user credentials 
 		let apiAuth = await getSuperSecuredToken(username, password)
@@ -106,6 +107,7 @@ const verifyEventProps = () => {
 	return result;
 }
 
+
 /**
  * Get Super Secured Token from API
  */
@@ -143,6 +145,7 @@ const getSuperSecuredToken = async (username, password) => {
 	}
 }
 
+
 /**
  * Get Temporary Token from API
  */
@@ -170,6 +173,7 @@ const getTempToken = async (apiAuth) => {
 		console.error(`unable to get temporary token: ${e}`)
 	}
 }
+
 
 /**
  * Get Report Object Export
