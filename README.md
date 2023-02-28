@@ -36,7 +36,9 @@ In your POST request to this Function, the *Report ID* must be specified.
 
 To find your specific *Report ID*, follow the instructions [here](https://www.twilio.com/docs/flex/developer/insights/api/export-data#export-the-raw-report:~:text=Object%20ID%3A,ID%20is%20643040.) for "Object ID".
 
-A specific `username` (email address) and `password` need to be used to access the Flex Insights API. If you have not worked with Twilio Support to get these credentials, that step will need to be completed first. File a Twilio Support ticket for assistance with this.
+
+**NOTE: A specific `username` (email address) and `password` need to be used to access the Flex Insights API. If you have not worked with Twilio Support to get these credentials, that step will need to be completed first. File a Twilio Support ticket for assistance with this.**
+
 
 
 ## Considerations
