@@ -20,7 +20,6 @@ This script is intended to be hosted on a [Twilio Serverless Function](https://w
 This Function should be set to "Public". We are validating header authorization in the Function code directly.
 
 
-
 ### Environment Variables
 
 The following [environment variable](https://www.twilio.com/docs/serverless/functions-assets/functions/variables) needs to be configured on your Function Service.
@@ -32,6 +31,17 @@ The following [environment variable](https://www.twilio.com/docs/serverless/func
 To find your specific *Workspace ID*, follow the instructions [here](https://www.twilio.com/docs/flex/developer/insights/api/export-data#export-the-raw-report:~:text=Workspace%20ID%3A%20Log,workspace%20ID%20qx8vgewnj2hyemje8f6bkrkbyqk8psrf.) for "Workspace ID".
 
 
+### Request Headers
+
+This Function requires credentials to be supplied in the form of Basic Authorization. In the headers of the request made to the Function, include your username and password credentials which have been granted access the Flex Insights API.
+
+| Variable | Example Identifier |
+| ----- | ---- |
+| `username` | example_user@your_domain.com |
+| `password` | *password set up through Twilio invitation* |
+
+**NOTE: If you do not have Flex Insights API credentials, contact Twilio Support to acquire the necessary credentials.**
+
 
 ### Request Variables
 
@@ -39,14 +49,8 @@ In your POST request to this Function, the *Report ID* must be specified.
 | Variable | Example Identifier |
 | ----- | ---- |
 | `reportId` | 643040 (example) |
-| `username` | example_user@your_domain.com |
-| `password` | *password set up through Twilio invitation* |
 
 To find your specific *Report ID*, follow the instructions [here](https://www.twilio.com/docs/flex/developer/insights/api/export-data#export-the-raw-report:~:text=Object%20ID%3A,ID%20is%20643040.) for "Object ID".
-
-
-**NOTE: A specific `username` (email address) and `password` need to be used to access the Flex Insights API. If you have not worked with Twilio Support to get these credentials, that step will need to be completed first. File a Twilio Support ticket for assistance with this.**
-
 
 
 ## Considerations
