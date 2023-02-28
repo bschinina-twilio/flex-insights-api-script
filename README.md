@@ -35,7 +35,7 @@ To find your specific *Workspace ID*, follow the instructions [here](https://www
 
 This Function requires credentials to be supplied in the form of Basic Authorization. In the headers of the request made to the Function, include your username and password credentials which have been granted access the Flex Insights API.
 
-| Variable | Example Identifier |
+| Authorization | Example Value |
 | ----- | ---- |
 | `username` | example_user@your_domain.com |
 | `password` | *password set up through Twilio invitation* |
