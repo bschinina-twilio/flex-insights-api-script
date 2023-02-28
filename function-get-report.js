@@ -6,11 +6,11 @@ ANALYTICS_WORKSPACE
 POST request must include reportId. Example JSON:
 {
 	"reportId":"111111",
-	"username":"your_email_address",
-	"password":"your_configured_password"
 }
 
-Contact Twilio Support if you do not have credentials.
+Required Basic Auth headers:
+Username: Your email address with access to Insights API
+Password: Your configured password (must have engaged Twilio Support for this)
 
 */
 
@@ -20,9 +20,11 @@ exports.handler = async function (context, event, callback) {
 	const response = new Twilio.Response()
 
 	const workspaceId = context.ANALYTICS_WORKSPACE
-	const { reportId, username, password } = event
+	const { reportId } = event
+	const { authorization } = event.request.headers
 
-	// verify we have all required request variables
+	let username, password
+
 	const eventCheck = verifyEventProps(event);
 	if (!eventCheck.success) {
 		console.log('Event property check failed.', eventCheck.errors);
@@ -31,8 +33,13 @@ exports.handler = async function (context, event, callback) {
 		return callback(null, response);
 	}
 
-	// get the data from Flex Insights
-	try {
+
+	const credentials = verifyUserCredentials(authorization)
+
+	if (credentials) {
+		username = credentials[0]
+		password = credentials[1]
+
 		// get sstoken with user credentials 
 		let apiAuth = await getSuperSecuredToken(username, password)
 
@@ -62,51 +69,75 @@ exports.handler = async function (context, event, callback) {
 
 					}
 				}
+				// failed to get report response
 				else {
-					let error = `ERROR: failed to get report export for ${reportId}`
 					response.setStatusCode(500)
-					response.setBody(error)
 					return callback(null, response)
 				}
 			}
+			// failed to get temp token
 			else {
-				let error = "ERROR: failed to get temporary token"
 				response.setStatusCode(500)
-				response.setBody(error)
 				return callback(null, response)
 			}
 		}
+		// failed to get sstoken
 		else {
-			let error = "ERROR: failed to get api authentication with provided user credentials"
-			response.setStatusCode(500)
-			response.setBody(error)
+			response.setStatusCode(401)
 			return callback(null, response)
 		}
 	}
-	catch (e) {
-		response.setStatusCode(500)
-		return callback(null, response)
+	//failed to verify basic auth
+	else {
+		response.setStatusCode(401);
+		return callback(null, response);
 	}
-
 }
 
 /**
  * Validate mandatory fields are supplied
  */
 const verifyEventProps = (event) => {
+	const { reportId } = event
+	const { authorization } = event.request.headers
+
 	const result = {
 		success: false,
 		errors: []
 	};
 
-	if (!event.username) result.errors.push("Missing 'username' in request body");
-	else if (!event.password) result.errors.push("Missing 'password' in request body");
-	else if (!event.reportId) result.errors.push("Missing 'reportId' in request body");
+	if (!authorization) result.errors.push("Missing 'authorization' in the request header");
+	else if (!reportId) result.errors.push("Missing 'reportId' in request body");
 	else result.success = true;
 
 	return result;
 }
 
+
+/**
+ * Validate Basic Auth header 
+ */
+const verifyUserCredentials = (authorization) => {
+	const isBasicAuth = /^Basic [a-zA-Z0-9]+?[=]*?$/.test(authorization)
+
+	console.log(isBasicAuth)
+	console.log(authorization)
+
+	if (isBasicAuth) {
+		let basic = authorization.slice(6)
+		let bufferObj = Buffer.from(basic, "base64");
+		let bufferString = bufferObj.toString("utf8")
+
+
+		let credentials = bufferString.split(":")
+
+		return credentials
+	}
+	else {
+		let error = "Authorization provided is not Basic Auth"
+		throw error
+	}
+}
 
 /**
  * Get Super Secured Token from API
@@ -141,10 +172,11 @@ const getSuperSecuredToken = async (username, password) => {
 		return apiAuth
 	}
 	catch (e) {
-		console.error(`unable to get secured token with provided credentials: ${e}`)
+		let error = `Provided authorization in the headers are not valid`
+		console.error(e)
+		throw error
 	}
 }
-
 
 /**
  * Get Temporary Token from API
@@ -170,10 +202,10 @@ const getTempToken = async (apiAuth) => {
 		return tmpToken.data.userToken.token
 	}
 	catch (e) {
-		console.error(`unable to get temporary token: ${e}`)
+		let error = `Failed to get temporary token: ${e}`
+		throw error
 	}
 }
-
 
 /**
  * Get Report Object Export
@@ -207,7 +239,8 @@ const getReportExport = async (tmpToken, workspace_id, object_id) => {
 		return reportResponse
 	}
 	catch (e) {
-		console.error(`unable to get report export: ${e}`)
+		let error = `Failed to get report export for Report ID ${object_id}: ${e}`
+		throw error
 	}
 }
 
@@ -269,6 +302,7 @@ const downloadReportCsv = async (tmpToken, reportResponse) => {
 		return reportCSV
 	}
 	catch (e) {
-		console.error(`unable to get report csv download: ${e}`)
+		let error = `Failed to get CSV download: ${e}`
+		throw error
 	}
 }
