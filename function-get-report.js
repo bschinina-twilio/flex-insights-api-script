@@ -120,9 +120,6 @@ const verifyEventProps = (event) => {
 const verifyUserCredentials = (authorization) => {
 	const isBasicAuth = /^Basic [a-zA-Z0-9]+?[=]*?$/.test(authorization)
 
-	console.log(isBasicAuth)
-	console.log(authorization)
-
 	if (isBasicAuth) {
 		let basic = authorization.slice(6)
 		let bufferObj = Buffer.from(basic, "base64");
