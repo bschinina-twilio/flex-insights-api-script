@@ -93,15 +93,15 @@ exports.handler = async function (context, event, callback) {
 /**
  * Validate mandatory fields are supplied
  */
-const verifyEventProps = () => {
+const verifyEventProps = (event) => {
 	const result = {
 		success: false,
 		errors: []
 	};
 
-	if (!username) result.errors.push("Missing 'username' in request body");
-	else if (!password) result.errors.push("Missing 'password' in request body");
-	else if (!reportId) result.errors.push("Missing 'reportId' in request body");
+	if (!event.username) result.errors.push("Missing 'username' in request body");
+	else if (!event.password) result.errors.push("Missing 'password' in request body");
+	else if (!event.reportId) result.errors.push("Missing 'reportId' in request body");
 	else result.success = true;
 
 	return result;
