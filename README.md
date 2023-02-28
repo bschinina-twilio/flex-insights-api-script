@@ -1,6 +1,6 @@
 # Flex Insights API Script
 
-This is a simple Twilio Serverless Function that gets report data from Twilio Flex Insights.
+This is a simple Twilio Serverless Function that gets CSV report data from Twilio Flex Insights.
 
 ## Flex Insights API
 
