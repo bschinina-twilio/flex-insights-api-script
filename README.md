@@ -41,7 +41,9 @@ A specific `username` (email address) and `password` need to be used to access t
 
 ## Considerations
 
-May want to retry more than 2x if we receive a 202
+In the `downloadReportCsv` function, we are [retrying the request to get the CSV twice](https://github.com/bschinina-twilio/flex-insights-api-script/blob/dc2d93c5c6ac686388a40bc0e977ab4856385b54/function-get-report.js#L195).
+
+This may be extended to try several more times if desired.
 
 
 ## Disclaimer
