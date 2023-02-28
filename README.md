@@ -33,7 +33,7 @@ To find your specific *Workspace ID*, follow the instructions [here](https://www
 
 ### Request Headers
 
-This Function requires credentials to be supplied in the form of Basic Authorization. In the headers of the request made to the Function, include your username and password credentials which have been granted access the Flex Insights API.
+This Function requires credentials to be supplied in the form of Basic Authorization. In the headers of the request made to the Function, include your username and password credentials which have been granted access to the Flex Insights API.
 
 | Authorization | Example Value |
 | ----- | ---- |
