@@ -17,12 +17,10 @@ This script is intended to be hosted on a [Twilio Serverless Function](https://w
 
 ### Environment Variables
 
-The following [environment variables](https://www.twilio.com/docs/serverless/functions-assets/functions/variables) need to be configured on your Function Service.
+The following [environment variable](https://www.twilio.com/docs/serverless/functions-assets/functions/variables) needs to be configured on your Function Service.
 
 | Variable | Example Identifier |
 | ----- | ---- |
-| `ANALYTICS_LOGIN_EMAIL` | example_user@your_domain.com |
-| `ANALYTICS_LOGIN_PASSWORD` | *password set up through Twilio invitation* |
 | `ANALYTICS_WORKSPACE` | qx8vgewnj2hyemje8f6bkrkbyqk8psrf (example) |
 
 To find your specific *Workspace ID*, follow the instructions [here](https://www.twilio.com/docs/flex/developer/insights/api/export-data#export-the-raw-report:~:text=Workspace%20ID%3A%20Log,workspace%20ID%20qx8vgewnj2hyemje8f6bkrkbyqk8psrf.) for "Workspace ID".
@@ -33,8 +31,13 @@ In your POST request to this Function, the *Report ID* must be specified.
 | Variable | Example Identifier |
 | ----- | ---- |
 | `reportId` | 643040 (example) |
+| `username` | example_user@your_domain.com |
+| `password` | *password set up through Twilio invitation* |
 
 To find your specific *Report ID*, follow the instructions [here](https://www.twilio.com/docs/flex/developer/insights/api/export-data#export-the-raw-report:~:text=Object%20ID%3A,ID%20is%20643040.) for "Object ID".
+
+A specific `username` (email address) and `password` need to be used to access the Flex Insights API. If you have not worked with Twilio Support to get these credentials, that step will need to be completed first. File a Twilio Support ticket for assistance with this.
+
 
 ## Considerations
 
