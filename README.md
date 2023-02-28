@@ -15,6 +15,12 @@ This goes over the requirements in more detail, including:
 
 This script is intended to be hosted on a [Twilio Serverless Function](https://www.twilio.com/docs/serverless/functions-assets/functions). 
 
+### Function Visibility
+
+This Function should be set to "Public". We are validating header authorization in the Function code directly.
+
+
+
 ### Environment Variables
 
 The following [environment variable](https://www.twilio.com/docs/serverless/functions-assets/functions/variables) needs to be configured on your Function Service.
@@ -24,6 +30,8 @@ The following [environment variable](https://www.twilio.com/docs/serverless/func
 | `ANALYTICS_WORKSPACE` | qx8vgewnj2hyemje8f6bkrkbyqk8psrf (example) |
 
 To find your specific *Workspace ID*, follow the instructions [here](https://www.twilio.com/docs/flex/developer/insights/api/export-data#export-the-raw-report:~:text=Workspace%20ID%3A%20Log,workspace%20ID%20qx8vgewnj2hyemje8f6bkrkbyqk8psrf.) for "Workspace ID".
+
+
 
 ### Request Variables
 
