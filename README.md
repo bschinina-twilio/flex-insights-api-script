@@ -23,7 +23,7 @@ The following [environment variables](https://www.twilio.com/docs/serverless/fun
 | ----- | ---- |
 | `ANALYTICS_LOGIN_EMAIL` | example_user@your_domain.com |
 | `ANALYTICS_LOGIN_PASSWORD` | *password set up through Twilio invitation* |
-| `ANALYTICS_WORKSPACE` | qx8vgewnj2hyemje8f6bkrkbyqk8psrf |
+| `ANALYTICS_WORKSPACE` | qx8vgewnj2hyemje8f6bkrkbyqk8psrf (example) |
 
 To find your specific *Workspace ID*, follow the instructions [here](https://www.twilio.com/docs/flex/developer/insights/api/export-data#export-the-raw-report:~:text=Workspace%20ID%3A%20Log,workspace%20ID%20qx8vgewnj2hyemje8f6bkrkbyqk8psrf.) for "Workspace ID".
 
@@ -32,7 +32,7 @@ To find your specific *Workspace ID*, follow the instructions [here](https://www
 In your POST request to this Function, the *Report ID* must be specified.
 | Variable | Example Identifier |
 | ----- | ---- |
-| `reportId` | 643040 |
+| `reportId` | 643040 (example) |
 
 To find your specific *Report ID*, follow the instructions [here](https://www.twilio.com/docs/flex/developer/insights/api/export-data#export-the-raw-report:~:text=Object%20ID%3A,ID%20is%20643040.) for "Object ID".
 
