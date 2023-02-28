@@ -22,6 +22,15 @@ exports.handler = async function (context, event, callback) {
 	const workspaceId = context.ANALYTICS_WORKSPACE
 	const { reportId, username, password } = event
 
+	const eventCheck = verifyEventProps(event);
+	if (!eventCheck.success) {
+		console.log('Event property check failed.', eventCheck.errors);
+		response.setStatusCode(400);
+		response.setBody({ status: 400, errors: eventCheck.errors });
+		return callback(null, response);
+	}
+
+
 	try {
 		// get sstoken with user credentials 
 		let apiAuth = await getSuperSecuredToken(username, password)
@@ -44,7 +53,7 @@ exports.handler = async function (context, event, callback) {
 						//we have CSV and it is full
 						console.log(`report data: ${reportCSV.data}`);
 						return callback(null, { data: reportCSV.data });
-					} 
+					}
 					else {
 						//we have CSV, but it is empty
 						console.log("reports data is empty", reportCSV, typeof reportCSV)
@@ -80,7 +89,26 @@ exports.handler = async function (context, event, callback) {
 
 }
 
+/**
+ * Validate mandatory fields are supplied
+ */
+const verifyEventProps = () => {
+	const result = {
+		success: false,
+		errors: []
+	};
 
+	if (!username) result.errors.push("Missing 'username' in request body");
+	else if (!password) result.errors.push("Missing 'password' in request body");
+	else if (!reportId) result.errors.push("Missing 'reportId' in request body");
+	else result.success = true;
+
+	return result;
+}
+
+/**
+ * Get Super Secured Token from API
+ */
 const getSuperSecuredToken = async (username, password) => {
 
 	// set up api authentication
@@ -115,7 +143,9 @@ const getSuperSecuredToken = async (username, password) => {
 	}
 }
 
-
+/**
+ * Get Temporary Token from API
+ */
 const getTempToken = async (apiAuth) => {
 	let tmpToken
 
@@ -141,6 +171,9 @@ const getTempToken = async (apiAuth) => {
 	}
 }
 
+/**
+ * Get Report Object Export
+ */
 const getReportExport = async (tmpToken, workspace_id, object_id) => {
 	let reportResponse
 
@@ -174,6 +207,11 @@ const getReportExport = async (tmpToken, workspace_id, object_id) => {
 	}
 }
 
+/**
+ * Get Report CSV data 
+ * Includes "retries" for when we receive a 202 from the API
+ * To learn more: https://www.twilio.com/docs/flex/developer/insights/api/export-data#download-the-report
+ */
 const downloadReportCsv = async (tmpToken, reportResponse) => {
 	let reportCSV
 
@@ -191,7 +229,6 @@ const downloadReportCsv = async (tmpToken, reportResponse) => {
 		reportCSV = await axios(downloadConfig);
 
 		// if we get a 202, try again 
-		// see docs for more details about this nuance: https://www.twilio.com/docs/flex/developer/insights/api/export-data#download-the-report
 		if (reportCSV.status === 202) {
 			console.log("csv download was not ready. trying again.")
 			reportCSV = await axios(downloadConfig)
