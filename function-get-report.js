@@ -23,8 +23,6 @@ exports.handler = async function (context, event, callback) {
 	const { reportId } = event
 	const { authorization } = event.request.headers
 
-	let username, password
-
 	const eventCheck = verifyEventProps(event);
 	if (!eventCheck.success) {
 		console.log('Event property check failed.', eventCheck.errors);
@@ -37,8 +35,8 @@ exports.handler = async function (context, event, callback) {
 	const credentials = verifyUserCredentials(authorization)
 
 	if (credentials) {
-		username = credentials[0]
-		password = credentials[1]
+		let username = credentials[0]
+		let password = credentials[1]
 
 		// get sstoken with user credentials 
 		let apiAuth = await getSuperSecuredToken(username, password)
